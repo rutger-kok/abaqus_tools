@@ -24,18 +24,18 @@ from itertools import cycle
 
 def fortran_77_output(input_file, output_file):
     # max length must account for continuation line indent
-    max_length = 61 # 72 - 7 - 4 (cont. line indent)
-    lines = split_lines(input_file, max_length)
+    max_length = 61  # 72 - 7 - 4 (cont. line indent)
     with open(output_file, 'w') as writer:
-        # continuation line numbering
-        line_numbers = cycle([1, 2, 3, 4, 5, 6, 7, 8, 9])
-        for i, output_line in enumerate(lines):
-            if i == 0:
-                output = ' ' * 6 + output_line + '\n'
-            else:
-                num = str(next(line_numbers))
-                output = ' ' * 5 + num + ' ' * 2 + output_line + '\n'
-            writer.write(output)
+        for line in split_lines(input_file, max_length):
+            # continuation line numbering
+            line_numbers = cycle([1, 2, 3, 4, 5, 6, 7, 8, 9])
+            for i, output_line in enumerate(line):
+                if i == 0:
+                    output = ' ' * 8 + output_line + '\n'
+                else:
+                    n = str(next(line_numbers))
+                    output = ' ' * 5 + n + ' ' * 4 + output_line + '\n'
+                writer.write(output)
 
 
 def fortran_90_output(input_file, output_file):
@@ -43,14 +43,15 @@ def fortran_90_output(input_file, output_file):
     max_length = 128  # 132 - 2 - 2 (cont. line indent)
     lines = split_lines(input_file, max_length)
     with open(output_file, 'w') as writer:
-        for i, output_line in enumerate(lines):
-            if i == 0:
-                output = output_line + ' &\n'
-            elif i == len(lines):
-                output = output_line + '\n'
-            else:
-                output = ' ' * 2 + output_line + ' &\n'
-            writer.write(output)
+        for line in split_lines(input_file, max_length):
+            for i, output_line in enumerate(lines):
+                if i == 0:
+                    output = output_line + ' &\n'
+                elif i == len(lines):
+                    output = output_line + '\n'
+                else:
+                    output = ' ' * 2 + output_line + ' &\n'
+                writer.write(output)
 
 
 def split_lines(input_file, max_length):
@@ -60,7 +61,7 @@ def split_lines(input_file, max_length):
             r = r'.{1,' + str(max_length) + r'}(?:\+|\-|\/|(?<!\*)\*(?!\*)|$)'
             # create a list of lines split according to the regular expression
             short_lines = [x.strip() for x in re.findall(r, input_line)]
-            return short_lines
+            yield short_lines
 
 
 def main():

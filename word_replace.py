@@ -62,6 +62,7 @@ def main():
     content = re.sub("A\x283.0d0,1.0d0\x29","A\x283,1\x29", content)
     content = re.sub("A\x283.0d0,2.0d0\x29","A\x283,2\x29", content)
     content = re.sub("A\x283.0d0,3.0d0\x29","A\x283,3\x29", content)
+    content = re.sub(r"\b(1.0d0/2.0d0)\b","0.5d0", content)
     with open(output_file, 'w') as writer:
         writer.write(content)
 
