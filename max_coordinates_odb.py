@@ -11,10 +11,9 @@ import visualization
 from caeModules import *
 
 # Use the output database displayed in the current viewport
-vp = session.viewports[session.currentViewportName]
 odb = vp.displayedObject
 if type(odb) != visualization.OdbType:
-    raise ValueError, 'An odb must be displayed in the current viewport.'
+    raise ValueError, 'An odb must be displayed! Please open an odb.'
 
 # Alternatively use a path to an odb
 # path = ''  # specify the path to your odb here
