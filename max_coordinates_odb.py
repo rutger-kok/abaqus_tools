@@ -10,7 +10,7 @@ from odbAccess import *
 import visualization
 from caeModules import *
 
-# Use the output database displayed in the current viewport
+# Use the output data
 odb = vp.displayedObject
 if type(odb) != visualization.OdbType:
     raise ValueError, 'An odb must be displayed! Please open an odb.'
